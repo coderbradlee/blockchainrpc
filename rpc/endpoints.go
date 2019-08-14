@@ -19,7 +19,7 @@ package rpc
 import (
 	"net"
 
-	"../log"
+	"github.com/lzxm160/blockchainrpc/log"
 )
 
 // StartHTTPEndpoint starts the HTTP RPC endpoint, configured with cors/vhosts/modules

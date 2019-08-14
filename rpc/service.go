@@ -27,7 +27,7 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"../log"
+	"github.com/lzxm160/blockchainrpc/log"
 )
 
 var (

@@ -25,7 +25,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"../log"
+	"github.com/lzxm160/blockchainrpc/log"
 )
 
 // ipcListen will create a Unix socket on the given endpoint.

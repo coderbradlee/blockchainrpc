@@ -26,9 +26,9 @@ import (
 	"strings"
 	"sync"
 
-	"../log"
 	mapset "github.com/deckarep/golang-set"
 	"github.com/gorilla/websocket"
+	"github.com/lzxm160/blockchainrpc/log"
 )
 
 const (

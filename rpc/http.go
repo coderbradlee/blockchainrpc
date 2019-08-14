@@ -31,7 +31,7 @@ import (
 	"sync"
 	"time"
 
-	"../log"
+	"github.com/lzxm160/blockchainrpc/log"
 	"github.com/rs/cors"
 )
 

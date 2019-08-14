@@ -25,7 +25,7 @@ import (
 	"sync"
 	"time"
 
-	"../log"
+	"github.com/lzxm160/blockchainrpc/log"
 )
 
 // handler handles JSON-RPC messages. There is one handler per connection. Note that

@@ -21,8 +21,8 @@ import (
 	"io"
 	"sync/atomic"
 
-	"../log"
 	mapset "github.com/deckarep/golang-set"
+	"github.com/lzxm160/blockchainrpc/log"
 )
 
 const MetadataApi = "rpc"
