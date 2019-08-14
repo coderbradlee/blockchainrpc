@@ -20,9 +20,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net"
+	"os"
+	"os/signal"
 	"time"
 
+	"github.com/lzxm160/blockchainrpc/log"
 	"github.com/lzxm160/blockchainrpc/rpc"
 )
 
@@ -35,16 +37,43 @@ func main() {
 		fmt.Println(err)
 		return
 	}
+	rpcAPI := []rpc.API{
+		{
+			Namespace: "test",
+			Public:    true,
+			Service:   service,
+			Version:   "1.0",
+		},
+	}
+	//vhosts := splitAndTrim(ctx.GlobalString(utils.RPCVirtualHostsFlag.Name))
+	//cors := splitAndTrim(ctx.GlobalString(utils.RPCCORSDomainFlag.Name))
 
-	listener, err := net.Listen("tcp", "127.0.0.1:8545")
+	// start http server
+	httpEndpoint := "127.0.0.1:8545"
+	listener, _, err := rpc.StartHTTPEndpoint(httpEndpoint, rpcAPI, []string{"test"}, nil, nil, rpc.DefaultHTTPTimeouts)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("Could not start RPC api: %v", err)
 		return
 	}
-	defer listener.Close()
-	go server.ServeListener(listener)
+	extapiURL := fmt.Sprintf("http://%s", httpEndpoint)
+	log.Info("HTTP endpoint opened", "url", extapiURL)
 
-	select {}
+	defer func() {
+		listener.Close()
+		log.Info("HTTP endpoint closed", "url", httpEndpoint)
+	}()
+
+	abortChan := make(chan os.Signal)
+	signal.Notify(abortChan, os.Interrupt)
+
+	sig := <-abortChan
+	log.Info("Exiting...", "signal", sig)
+	//listener, handler, err := rpc.StartHTTPEndpoint("127.0.0.1:8545", nil, nil, cors, vhosts, timeouts)
+	//if err != nil {
+	//	return err
+	//}
+	//n.log.Info("HTTP endpoint opened", "url", fmt.Sprintf("http://%s", endpoint), "cors", strings.Join(cors, ","), "vhosts", strings.Join(vhosts, ","))
+	//select {}
 }
 
 type testService struct{}
