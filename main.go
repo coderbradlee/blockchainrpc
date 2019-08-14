@@ -85,17 +85,16 @@ type Args struct {
 type Result struct {
 	String string
 	Int    int
-	Args   *Args
 }
 
 func (s *testService) NoArgsRets() {}
 
-func (s *testService) Echo(str string, i int, args *Args) Result {
-	return Result{str, i, args}
+func (s *testService) Echo(str string, i int) Result {
+	return Result{str, i}
 }
 
 func (s *testService) EchoWithCtx(ctx context.Context, str string, i int, args *Args) Result {
-	return Result{str, i, args}
+	return Result{str, i}
 }
 
 func (s *testService) Sleep(ctx context.Context, duration time.Duration) {
