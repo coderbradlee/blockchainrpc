@@ -20,6 +20,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net"
 	"time"
 
 	"github.com/lzxm160/blockchainrpc/rpc"
@@ -27,11 +28,22 @@ import (
 
 func main() {
 	server := rpc.NewServer()
+	defer server.Stop()
 	service := new(testService)
 
 	if err := server.RegisterName("test", service); err != nil {
 		fmt.Println(err)
+		return
 	}
+
+	listener, err := net.Listen("tcp", "127.0.0.1:8545")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer listener.Close()
+	go server.ServeListener(listener)
+
 	select {}
 }
 
